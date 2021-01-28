@@ -10,7 +10,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 
 import Colors from "../../constants/Colors";
-import StandardFonts from "../../constants/fonts";
+import StandardFonts from "../../constants/StandardFonts";
 import * as cartActions from "../../store/actions/cart";
 
 const productsDetailScreen = (props) => {

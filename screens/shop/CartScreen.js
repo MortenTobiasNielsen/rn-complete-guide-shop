@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import CartItem from "../../components/shop/CartItem";
 import Colors from "../../constants/Colors";
-import StandardFonts from "../../constants/fonts";
+import StandardFonts from "../../constants/StandardFonts";
 import * as cartActions from "../../store/actions/cart";
 import * as ordersActions from "../../store/actions/orders";
 
@@ -59,6 +59,10 @@ const CartScreen = (props) => {
       />
     </View>
   );
+};
+
+CartScreen.navigationOptions = {
+  headerTitle: "Your Cart",
 };
 
 const styles = StyleSheet.create({

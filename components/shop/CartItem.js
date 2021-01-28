@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-import StandardFonts from "../../constants/fonts";
+import StandardFonts from "../../constants/StandardFonts";
 
 const CartItem = (props) => {
   return (

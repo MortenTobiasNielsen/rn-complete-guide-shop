@@ -11,7 +11,7 @@ import {
 } from "react-native";
 
 import Colors from "../../constants/Colors";
-import StandardFonts from "../../constants/fonts";
+import StandardFonts from "../../constants/StandardFonts";
 
 const ProductItem = (props) => {
   let TouchableCmp = TouchableOpacity;
