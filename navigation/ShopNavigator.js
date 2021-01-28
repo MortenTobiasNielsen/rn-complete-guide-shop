@@ -5,6 +5,7 @@ import { Platform } from "react-native";
 import ProductsOverviewScreen from "../screens/shop/ProductsOverviewScreen";
 import productsDetailScreen from "../screens/shop/ProductDetailScreen";
 import Colors from "../constants/Colors";
+import StandardFonts from "../constants/fonts";
 
 const ProductsNavigator = createStackNavigator(
   {
@@ -16,6 +17,13 @@ const ProductsNavigator = createStackNavigator(
       headerStyle: {
         backgroundColor: Platform.OS === "android" ? Colors.primary : "",
       },
+      headerTitleStyle: {
+        fontFamily: StandardFonts.openSansBold,
+      },
+      headerBackTitleStyle: {
+        fontFamily: StandardFonts.openSans,
+      },
+
       headerTintColor: Platform.OS === "android" ? "white" : Colors.primary,
     },
   }

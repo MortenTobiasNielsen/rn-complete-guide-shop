@@ -11,6 +11,7 @@ import {
 } from "react-native";
 
 import Colors from "../../constants/Colors";
+import StandardFonts from "../../constants/fonts";
 
 const ProductItem = (props) => {
   let TouchableCmp = TouchableOpacity;
@@ -83,10 +84,12 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   title: {
+    fontFamily: StandardFonts.openSansBold,
     fontSize: 18,
-    marginVertical: 4,
+    marginVertical: 2,
   },
   price: {
+    fontFamily: StandardFonts.openSans,
     fontSize: 14,
     color: "#888",
   },
