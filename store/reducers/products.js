@@ -1,7 +1,7 @@
 import PRODUCTS from "../../data/dummy-data";
 import {
-  CREATE_PRODUCT,
   DELETE_PRODUCT,
+  CREATE_PRODUCT,
   UPDATE_PRODUCT,
 } from "../actions/products";
 import Product from "../../models/product";
@@ -29,9 +29,6 @@ export default (state = initialState, action) => {
       };
 
     case UPDATE_PRODUCT:
-      console.log("Products reducer: " + state.userProducts);
-      console.log("Products reducer: " + action.id);
-
       const productIndex = state.userProducts.findIndex(
         (product) => product.id === action.id
       );

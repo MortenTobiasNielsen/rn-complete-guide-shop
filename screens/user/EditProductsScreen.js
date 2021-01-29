@@ -2,11 +2,10 @@ import React, { useEffect, useCallback, useReducer } from "react";
 import {
   View,
   ScrollView,
-  Text,
-  TextInput,
   StyleSheet,
   Platform,
   Alert,
+  KeyboardAvoidingView,
 } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { useSelector, useDispatch } from "react-redux";
@@ -14,9 +13,9 @@ import { useSelector, useDispatch } from "react-redux";
 import Input from "../../components/UI/Input";
 import HeaderButton from "../../components/UI/HeaderButton";
 import StandardFonts from "../../constants/StandardFonts";
-import * as productActions from "../../store/actions/products";
+import * as productsActions from "../../store/actions/products";
 
-const FORM_INPUT_UPDATE = "UPDATE";
+const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
 const formReducer = (state, action) => {
   if (action.type === FORM_INPUT_UPDATE) {
@@ -39,8 +38,8 @@ const formReducer = (state, action) => {
     return {
       ...state,
       formIsValid: updatedFormIsValid,
-      inputValues: updatedValues,
       inputValidities: updatedValidities,
+      inputValues: updatedValues,
     };
   }
 
@@ -80,7 +79,7 @@ const EditProductScreen = (props) => {
 
     if (editedProduct) {
       dispatch(
-        productActions.updateProduct(
+        productsActions.updateProduct(
           productId,
           formState.inputValues.title,
           formState.inputValues.description,
@@ -89,7 +88,7 @@ const EditProductScreen = (props) => {
       );
     } else {
       dispatch(
-        productActions.createProduct(
+        productsActions.createProduct(
           formState.inputValues.title,
           formState.inputValues.description,
           formState.inputValues.imageUrl,
@@ -105,55 +104,80 @@ const EditProductScreen = (props) => {
     props.navigation.setParams({ submit: submitHandler });
   }, [submitHandler]);
 
-  const textChangeHandler = (inputIdentifier, text) => {
-    let isValid = false;
-    if (text.trim().length > 0) {
-      isValid = true;
-    }
-    dispatchFormState({
-      type: FORM_INPUT_UPDATE,
-      value: text,
-      isValid: isValid,
-      input: inputIdentifier,
-    });
-  };
+  const inputChangeHandler = useCallback(
+    (inputIdentifier, inputValue, inputValidity) => {
+      dispatchFormState({
+        type: FORM_INPUT_UPDATE,
+        value: inputValue,
+        isValid: inputValidity,
+        input: inputIdentifier,
+      });
+    },
+    [dispatchFormState]
+  );
 
   return (
-    <ScrollView>
-      <View style={styles.form}>
-        <Input
-          label="Title"
-          errorText="Please enter a valid title!"
-          keyboardType="default"
-          autoCapitalize="sentences"
-          autoCorrect
-          returnKeyType="next"
-        />
-        <Input
-          label="Image Url"
-          errorText="Please enter a valid image url!"
-          keyboardType="default"
-          returnKeyType="next"
-        />
-        {editedProduct ? null : (
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior="padding"
+      keyboardVerticalOffset={25}
+    >
+      <ScrollView>
+        <View style={styles.form}>
           <Input
-            label="Price"
-            errorText="Please enter a valid price!"
-            keyboardType="decimal-pad"
+            id="title"
+            label="Title"
+            errorText="Please enter a valid title!"
+            keyboardType="default"
+            autoCapitalize="sentences"
+            autoCorrect
             returnKeyType="next"
+            onInputChange={inputChangeHandler}
+            initialValue={editedProduct ? editedProduct.title : ""}
+            initiallyValid={!!editedProduct}
+            required
           />
-        )}
-        <Input
-          label="Description"
-          errorText="Please enter a valid Description!"
-          keyboardType="default"
-          autoCapitalize="sentences"
-          autoCorrect
-          multiline
-          numberOfLines={3}
-        />
-      </View>
-    </ScrollView>
+          <Input
+            id="imageUrl"
+            label="Image Url"
+            errorText="Please enter a valid image url!"
+            keyboardType="default"
+            returnKeyType="next"
+            onInputChange={inputChangeHandler}
+            initialValue={editedProduct ? editedProduct.imageUrl : ""}
+            initiallyValid={!!editedProduct}
+            required
+          />
+          {editedProduct ? null : (
+            <Input
+              id="price"
+              label="Price"
+              errorText="Please enter a valid price!"
+              keyboardType="decimal-pad"
+              returnKeyType="next"
+              onInputChange={inputChangeHandler}
+              required
+              min={0.1}
+            />
+          )}
+          <Input
+            id="description"
+            label="Description"
+            errorText="Please enter a valid Description!"
+            keyboardType="default"
+            autoCapitalize="sentences"
+            autoCorrect
+            multiline
+            numberOfLines={3}
+            onInputChange={inputChangeHandler}
+            initialValue={editedProduct ? editedProduct.description : ""}
+            initiallyValid={!!editedProduct}
+            required
+            minLength={5}
+          />
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
