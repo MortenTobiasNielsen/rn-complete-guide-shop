@@ -1,5 +1,13 @@
-import React from "react";
-import { FlatList, Button, Platform, Alert } from "react-native";
+import React, { useState, useCallback } from "react";
+import {
+  View,
+  FlatList,
+  Button,
+  Platform,
+  Alert,
+  ActivityIndicator,
+  StyleSheet,
+} from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
@@ -9,6 +17,9 @@ import * as productsActions from "../../store/actions/products";
 import Colors from "../../constants/Colors";
 
 const UserProductsScreen = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
+
   const userProducts = useSelector((state) => state.products.userProducts);
   const dispatch = useDispatch();
 
@@ -16,16 +27,39 @@ const UserProductsScreen = (props) => {
     props.navigation.navigate("EditProduct", { productId: id });
   };
 
+  const confirmedDeleteHandler = useCallback(
+    async (id) => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        await dispatch(productsActions.deleteProduct(id));
+      } catch (err) {
+        setError(err.message);
+      }
+
+      setIsLoading(false);
+    },
+    [dispatch, id]
+  );
+
   const deleteHandler = (id) => {
     Alert.alert("Are you sure?", "Do you really want to delete this item?", [
       { text: "No", style: "default" },
       {
         text: "Yes",
         style: "destructive",
-        onPress: () => dispatch(productsActions.deleteProduct(id)),
+        onPress: () => confirmedDeleteHandler(id),
       },
     ]);
   };
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
+  }
 
   return (
     <FlatList
@@ -84,5 +118,13 @@ UserProductsScreen.navigationOptions = (navData) => {
     ),
   };
 };
+
+const styles = StyleSheet.create({
+  centered: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default UserProductsScreen;
