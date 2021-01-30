@@ -19,7 +19,16 @@ export const signup = (email, password) => {
     );
 
     if (!response.ok) {
-      throw new Error("Something went wrong!");
+      const errorResData = await response.json();
+      const errorId = errorResData.error.message;
+
+      let message = "Something Went Wrong";
+
+      if (errorId === "EMAIL_EXISTS") {
+        message = "This email already exists"; // This is bad practice, given that malicious user would be able to extract emails
+      }
+
+      throw new Error(message);
     }
 
     const resData = await response.json();
@@ -48,7 +57,18 @@ export const login = (email, password) => {
     );
 
     if (!response.ok) {
-      throw new Error("Something went wrong!");
+      const errorResData = await response.json();
+      const errorId = errorResData.error.message;
+
+      let message = "Something Went Wrong";
+
+      if (errorId === "EMAIL_NOT_FOUND") {
+        message = "This email could not be found"; // This is bad practice, given that malicious user would be able to extract emails
+      } else if (errorId === "INVALID_PASSWORD") {
+        message = "This password is not valid"; // This is bad practice, given that malicious user would be able to extract emails
+      }
+
+      throw new Error(message);
     }
 
     const resData = await response.json();
