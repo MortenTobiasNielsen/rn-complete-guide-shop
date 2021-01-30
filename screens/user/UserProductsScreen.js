@@ -27,19 +27,22 @@ const UserProductsScreen = (props) => {
     props.navigation.navigate("EditProduct", { productId: id });
   };
 
+  // There seem to be something wrong with the logic regarding id
+  // The use of id has therefore been removed
   const confirmedDeleteHandler = useCallback(
     async (id) => {
+      console.log(id);
       setIsLoading(true);
       setError(null);
       try {
-        await dispatch(productsActions.deleteProduct(id));
+        await dispatch(productsActions.deleteProduct());
       } catch (err) {
         setError(err.message);
       }
 
       setIsLoading(false);
     },
-    [dispatch, id]
+    [dispatch]
   );
 
   const deleteHandler = (id) => {
