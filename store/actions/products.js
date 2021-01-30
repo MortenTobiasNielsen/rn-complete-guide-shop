@@ -6,7 +6,8 @@ export const UPDATE_PRODUCT = "UPDATE_PRODUCT";
 export const SET_PRODUCTS = "SET_PRODUCTS";
 
 export const fetchProducts = () => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const userId = getState().auth.userId;
     try {
       const response = await fetch(
         "https://rn-complete-guide-shop-9252e-default-rtdb.europe-west1.firebasedatabase.app/products.json"
@@ -23,7 +24,7 @@ export const fetchProducts = () => {
         loadedProducts.push(
           new Product(
             key,
-            "u1",
+            resData[key].ownerId,
             resData[key].title,
             resData[key].imageUrl,
             resData[key].description,
@@ -32,7 +33,13 @@ export const fetchProducts = () => {
         );
       }
 
-      dispatch({ type: SET_PRODUCTS, products: loadedProducts });
+      dispatch({
+        type: SET_PRODUCTS,
+        products: loadedProducts,
+        userProducts: loadedProducts.filter(
+          (product) => product.ownerId === userId
+        ),
+      });
     } catch (err) {
       // Maybe send to analytics server
       throw err;
@@ -62,6 +69,7 @@ export const deleteProduct = (id) => {
 export const createProduct = (title, description, imageUrl, price) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
+    const userId = getState().auth.userId;
 
     const response = await fetch(
       `https://rn-complete-guide-shop-9252e-default-rtdb.europe-west1.firebasedatabase.app/products.json?auth=${token}`,
@@ -70,7 +78,13 @@ export const createProduct = (title, description, imageUrl, price) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ title, description, imageUrl, price }),
+        body: JSON.stringify({
+          title,
+          description,
+          imageUrl,
+          price,
+          ownerId: userId,
+        }),
       }
     );
 
@@ -84,6 +98,7 @@ export const createProduct = (title, description, imageUrl, price) => {
         description,
         imageUrl,
         price,
+        ownerId: userId,
       },
     });
   };

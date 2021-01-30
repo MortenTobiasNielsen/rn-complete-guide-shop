@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import {
   View,
+  Text,
   FlatList,
   Button,
   Platform,
@@ -60,6 +61,14 @@ const UserProductsScreen = (props) => {
     return (
       <View style={styles.centered}>
         <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
+  }
+
+  if (userProducts.length === 0) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>No products - try adding some</Text>
       </View>
     );
   }
