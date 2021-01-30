@@ -32,7 +32,6 @@ const UserProductsScreen = (props) => {
   // The use of id has therefore been removed
   const confirmedDeleteHandler = useCallback(
     async (id) => {
-      console.log(id);
       setIsLoading(true);
       setError(null);
       try {
