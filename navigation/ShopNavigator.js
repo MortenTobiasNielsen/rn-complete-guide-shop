@@ -9,10 +9,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 
 import ProductsOverviewScreen, {
-  screenOptions as productsOverScreenOptions,
+  screenOptions as productsOverviewScreenOptions,
 } from "../screens/shop/ProductsOverviewScreen";
-import ProductsDetailScreen, {
-  screenOptions as productsDetailScreenOptions,
+import ProductDetailScreen, {
+  screenOptions as productDetailScreenOptions,
 } from "../screens/shop/ProductDetailScreen";
 import CartScreen, {
   ScreenOptions as cartScreenOptions,
@@ -26,7 +26,9 @@ import UserProductsScreen, {
 import EditProductsScreen, {
   screenOptions as editProductsScreenOptions,
 } from "../screens/user/EditProductsScreen";
-import AuthScreen from "../screens/user/AuthScreen";
+import AuthScreen, {
+  screenOptions as authScreenOptions,
+} from "../screens/user/AuthScreen";
 import StartupScreen from "../screens/StartupScreen";
 import Colors from "../constants/Colors";
 import StandardFonts from "../constants/StandardFonts";
@@ -54,12 +56,12 @@ export const ProductsNavigator = () => {
       <ProductsStackNavigator.Screen
         name="ProductsOverview"
         component={ProductsOverviewScreen}
-        options={productsOverScreenOptions}
+        options={productsOverviewScreenOptions}
       />
       <ProductsStackNavigator.Screen
         name="ProductDetail"
-        component={ProductsDetailScreen}
-        options={productsDetailScreenOptions}
+        component={ProductDetailScreen}
+        options={productDetailScreenOptions}
       />
       <ProductsStackNavigator.Screen
         name="Cart"
@@ -73,7 +75,7 @@ export const ProductsNavigator = () => {
 // const ProductsNavigator = createStackNavigator(
 //   {
 //     ProductsOverview: ProductsOverviewScreen,
-//     ProductDetail: ProductsDetailScreen,
+//     ProductDetail: ProductDetailScreen,
 //     Cart: CartScreen,
 //   },
 //   {
@@ -91,16 +93,18 @@ export const ProductsNavigator = () => {
 //   }
 // );
 
-const ordersStackNavigator = createStackNavigator();
+const OrdersStackNavigator = createStackNavigator();
 
 export const OrdersNavigator = () => {
-  <ordersStackNavigator.Navigator screenOptions={defaultNavOptions}>
-    <ordersStackNavigator.screen
-      name="Orders"
-      component={OrdersScreen}
-      options={ordersScreenOptions}
-    />
-  </ordersStackNavigator.Navigator>;
+  return (
+    <OrdersStackNavigator.Navigator screenOptions={defaultNavOptions}>
+      <OrdersStackNavigator.Screen
+        name="Orders"
+        component={OrdersScreen}
+        options={ordersScreenOptions}
+      />
+    </OrdersStackNavigator.Navigator>
+  );
 };
 
 // const OrdersNavigator = createStackNavigator(
@@ -126,12 +130,12 @@ const AdminStackNavigator = createStackNavigator();
 export const AdminNavigator = () => {
   return (
     <AdminStackNavigator.Navigator screenOptions={defaultNavOptions}>
-      <AdminStackNavigator.screen
+      <AdminStackNavigator.Screen
         name="UserProducts"
         component={UserProductsScreen}
         options={userProductsScreenOptions}
       />
-      <AdminStackNavigator.screen
+      <AdminStackNavigator.Screen
         name="EditProduct"
         component={EditProductsScreen}
         options={editProductsScreenOptions}
@@ -161,7 +165,7 @@ export const AdminNavigator = () => {
 
 const ShopDrawerNavigator = createDrawerNavigator();
 
-const ShopNavigator = () => {
+export const ShopNavigator = () => {
   const dispatch = useDispatch();
 
   return (
@@ -259,6 +263,20 @@ const ShopNavigator = () => {
 //     },
 //   }
 // );
+
+const AuthStackNavigator = createStackNavigator();
+
+export const AuthNavigator = () => {
+  return (
+    <AuthStackNavigator.Navigator screenOptions={defaultNavOptions}>
+      <AuthStackNavigator.Screen
+        name="Auth"
+        component={AuthScreen}
+        options={authScreenOptions}
+      />
+    </AuthStackNavigator.Navigator>
+  );
+};
 
 // const AuthNavigator = createStackNavigator(
 //   {

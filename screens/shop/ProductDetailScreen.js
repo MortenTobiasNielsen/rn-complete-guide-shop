@@ -13,7 +13,7 @@ import Colors from "../../constants/Colors";
 import StandardFonts from "../../constants/StandardFonts";
 import * as cartActions from "../../store/actions/cart";
 
-const productsDetailScreen = (props) => {
+const productDetailScreen = (props) => {
   const productId = props.navigation.getParam("productId");
   const selectedProduct = useSelector((state) =>
     state.products.availableProducts.find((prod) => prod.id === productId)
@@ -69,4 +69,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default productsDetailScreen;
+export default productDetailScreen;
